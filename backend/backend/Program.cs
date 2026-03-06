@@ -55,7 +55,7 @@ app
 app.MapPost("/api/userRegister", async (
     UserManager<AppUser> userManager,
     IWebHostEnvironment env,
-    [FromForm] UserRegistrationModel userRegistrationModel
+    [FromBody] UserRegistrationModel userRegistrationModel
     ) =>
 {
     string? dbPath = null;
@@ -93,7 +93,7 @@ app.MapPost("/api/userRegister", async (
         //Profile image eklenecek:
         ProfileImageUrl = dbPath
     };
-    var result= await userManager.CreateAsync(user, userRegistrationModel.Password);
+    var result = await userManager.CreateAsync(user, userRegistrationModel.Password);
 
     if (result.Succeeded)
         return Results.Ok(result);
