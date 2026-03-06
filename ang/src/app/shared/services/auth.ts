@@ -11,5 +11,5 @@ export class Auth {
   createUser(formData:any){
     return this.http.post(this.baseURL+'/userRegister',formData);
   }
-
+  
 }

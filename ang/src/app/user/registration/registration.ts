@@ -43,7 +43,7 @@ export class Registration {
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]], // Sadece rakam
       password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)]], //en az 6 karakter ve 1 özel karakter : . *
       confirmPassword: [''],
-      ProfileImageUrl: new FormControl<File | null>(null)
+      profileImage: new FormControl<File | null>(null)
     }, { validators: this.passwordMatchValidator })
 
     // Dosya seçildiğinde çalışan fonksiyon
@@ -52,8 +52,8 @@ export class Registration {
     const file = element.files?.[0];
     
     if (file) {
-      this.registerForm.patchValue({ ProfileImageUrl: file });
-      this.registerForm.get('ProfileImageUrl')?.updateValueAndValidity();
+      this.registerForm.patchValue({ profileImage: file });
+      this.registerForm.get('profileImage')?.updateValueAndValidity();
 
       const reader = new FileReader();
       reader.onload = () => {
