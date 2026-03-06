@@ -36,7 +36,7 @@ export class Registration {
 
   formBuilder = inject(FormBuilder); //sonra sil
   private service = inject(Auth);
-//  private toastr = inject(ToastrService);
+  private toastr = inject(ToastrService);
 
     registerForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
@@ -89,7 +89,7 @@ export class Registration {
             if (res.succeeded) {
               this.resetForm();
               this.isSubmitted = false;
-            //  this.toastr.success('New user created!', 'Registration Successful')
+              this.toastr.success('New user created!', 'Registration Successful')
             }
         },
         error:err=>{
@@ -100,11 +100,11 @@ export class Registration {
                     break;
 
                   case "DuplicateEmail":
-                  //  this.toastr.error('Email is already taken.', 'Registration Failed')
+                    this.toastr.error('Email is already taken.', 'Registration Failed')
                     break;
 
                   default:
-                  //  this.toastr.error('Contact the developer', 'Registration Failed')
+                    this.toastr.error('Contact the developer', 'Registration Failed')
                     console.log(x);
                     break;
                 }
