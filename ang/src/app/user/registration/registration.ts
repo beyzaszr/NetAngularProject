@@ -4,6 +4,7 @@ import { inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FirstKeyPipe } from '../../shared/pipes/first-key-pipe';
 import { Auth } from '../../shared/services/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -35,6 +36,7 @@ export class Registration {
 
   formBuilder = inject(FormBuilder); //sonra sil
   private service = inject(Auth);
+//  private toastr = inject(ToastrService);
 
     registerForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
@@ -57,7 +59,7 @@ export class Registration {
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.imagePreview = this.imagePreview = reader.result;
+        this.imagePreview = reader.result;
       };
       reader.readAsDataURL(file);
     }
@@ -65,10 +67,13 @@ export class Registration {
 
   // Temizle butonuna basıldığında önizlemeyi de sıfırlamak için:
   resetForm() {
+    // 1. Form değerlerini ve durumunu (touched/dirty) sıfırla
     this.registerForm.reset();
+    
+    // 2. Görsel önizlemeyi kaldır
     this.imagePreview = null;
 
-    // Input elementinin değerini manuel olarak boşaltıyoruz
+    // 3. HTML'deki "Dosya Seçilmedi" yazısını geri getir
     if (this.fileInputRef) {
       this.fileInputRef.nativeElement.value = '';
     }
@@ -80,15 +85,38 @@ export class Registration {
       console.log('Form Verileri:', this.registerForm.value);
       this.service.createUser(this.registerForm.value)
       .subscribe({
-        next:res=>{
-         console.log(res);
-
+        next: (res: any) => {
+            if (res.succeeded) {
+              this.resetForm();
+              this.isSubmitted = false;
+            //  this.toastr.success('New user created!', 'Registration Successful')
+            }
         },
-        error:err=>console.log('error',err)
+        error:err=>{
+           if (err.error.errors)
+              err.error.errors.forEach((x: any) => {
+                switch (x.code) {
+                  case "DuplicateUserName":
+                    break;
+
+                  case "DuplicateEmail":
+                  //  this.toastr.error('Email is already taken.', 'Registration Failed')
+                    break;
+
+                  default:
+                  //  this.toastr.error('Contact the developer', 'Registration Failed')
+                    console.log(x);
+                    break;
+                }
+              })
+            else
+              console.log('error:',err);
+        }
+
       });
       
-      // Burada API servisinizi çağır
     }
+
   }
   
     hasDisplayableError(controlName: string): Boolean {
