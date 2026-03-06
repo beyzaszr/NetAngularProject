@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidatorFn, Validators, FormControl } from '@angular/forms';
 import { inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,18 +15,33 @@ export class Registration {
   @ViewChild('fileInput') fileInputRef!: ElementRef;
 
   //constructor(public formBuilder: FormBuilder){} // geliştince lazım
+  isSubmitted: boolean = false;
+  
   imagePreview: string | ArrayBuffer | null = null; // Önizleme için
+
+  passwordMatchValidator: ValidatorFn = (control: AbstractControl): null => {
+    const password = control.get('password')
+    const confirmPassword = control.get('confirmPassword')
+
+    if (password && confirmPassword && password.value != confirmPassword.value)
+      confirmPassword?.setErrors({ passwordMismatch: true })
+    else
+      confirmPassword?.setErrors(null)
+
+    return null;
+  }
 
   formBuilder = inject(FormBuilder); //sonra sil
 
     registerForm = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]], // E-posta formatı kontrolü
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]], // Sadece rakam
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)]], //en az 6 karakter ve 1 özel karakter : . *
+      confirmPassword: [''],
       profileImage: new FormControl<File | null>(null)
-    })
+    }, { validators: this.passwordMatchValidator })
 
     // Dosya seçildiğinde çalışan fonksiyon
   onFileSelected(event: Event): void {
@@ -57,6 +72,7 @@ export class Registration {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
     if (this.registerForm.valid) {
       console.log('Form Verileri:', this.registerForm.value);
       // Burada API servisinizi çağır
@@ -66,4 +82,9 @@ export class Registration {
     }
   }
   
+    hasDisplayableError(controlName: string): Boolean {
+    const control = this.registerForm.get(controlName);
+    return Boolean(control?.invalid) &&
+      (this.isSubmitted || Boolean(control?.touched)|| Boolean(control?.dirty))
+  }
 }
