@@ -37,6 +37,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+#region Config. CORS
+app.UseCors(options =>
+       options.WithOrigins("http://localhost:4200")
+       .AllowAnyMethod()
+       .AllowAnyHeader());
+#endregion
+
 app.UseAuthorization();
 
 app.MapControllers();
@@ -48,7 +55,7 @@ app
 app.MapPost("/api/userRegister", async (
     UserManager<AppUser> userManager,
     IWebHostEnvironment env,
-    [FromBody] UserRegistrationModel userRegistrationModel
+    [FromForm] UserRegistrationModel userRegistrationModel
     ) =>
 {
     string? dbPath = null;
