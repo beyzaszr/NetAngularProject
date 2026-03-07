@@ -12,4 +12,7 @@ export class Auth {
     return this.http.post(this.baseURL+'/userRegister',formData);
   }
   
+  signin(formData:any){
+    return this.http.post(this.baseURL+'/userLogin',formData);
+  }
 }
