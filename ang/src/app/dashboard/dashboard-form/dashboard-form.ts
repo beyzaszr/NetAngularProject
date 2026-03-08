@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { DashboardService } from '../../shared/services/dashboard';
 //import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
+import { Dashboard } from '../../shared/model/dashboard.model';
 
 @Component({
   selector: 'app-dashboard-form',
@@ -33,6 +34,8 @@ export class DashboardForm {
     .subscribe({
       next:res=>{
         console.log(res);
+        this.service.list =res as Dashboard[]
+        this.service.resetForm(form)
       },
       error:err=>{console.log(err);
         console.log("ERROR BODY:", err.error);

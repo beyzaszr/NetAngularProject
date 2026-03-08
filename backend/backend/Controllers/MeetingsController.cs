@@ -69,7 +69,7 @@ namespace backend.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(await _context.Meetings.ToListAsync());
         }
 
         // POST: api/Meetings
@@ -80,7 +80,7 @@ namespace backend.Controllers
             _context.Meetings.Add(meeting);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMeeting", new { id = meeting.Id }, meeting);
+            return Ok(await _context.Meetings.ToListAsync());
         }
 
         // DELETE: api/Meetings/5
@@ -96,7 +96,7 @@ namespace backend.Controllers
             _context.Meetings.Remove(meeting);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(await _context.Meetings.ToListAsync());
         }
 
         private bool MeetingExists(int id)
