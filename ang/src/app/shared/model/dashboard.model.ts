@@ -7,6 +7,4 @@ export class Dashboard {
     isCanceled: boolean=false;
     documentPath?: string=""
     documentOriginalName?: string=""
-    createdAt: string=""
-    updatedAt?: string=""
 }

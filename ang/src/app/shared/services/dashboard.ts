@@ -24,9 +24,12 @@ export class DashboardService {
         },
         error: err => { console.log(err) }
       })
-
-
-
   }
+
+  postMeeting(){
+   return this.http.post(this.url,this.formData)
+  }
+
+
 
 }

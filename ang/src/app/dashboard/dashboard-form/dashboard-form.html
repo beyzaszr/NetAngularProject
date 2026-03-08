@@ -3,7 +3,7 @@
           <h5 class="mb-0"><!--{{ isEditMode ? 'Update Meeting' : 'Schedule New Meeting' }}--></h5>
         </div>
         <div class="card-body">
-          <form #form="ngForm" >
+          <form #form="ngForm" (submit)="onSubmit(form)">
             
             <div class="mb-3">
               <label for="title" class="form-label fw-bold">Meeting Title</label>
@@ -52,6 +52,9 @@
             </div>
 
             <div class="d-grid gap-2 mt-4">
+               <button class="btn btn-primary" type="submit">
+                  Submit
+                </button>         
              <!-- <button type="submit" class="btn btn-primary" [disabled]="meetingForm.invalid">
                 {{ isEditMode ? 'Update Meeting' : 'Save Meeting' }}
               </button>

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { DashboardService } from '../../shared/services/dashboard';
 //import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-form',
@@ -28,7 +28,18 @@ export class DashboardForm {
     //onsubmit içerisinde backende göndereceğiz
   }
 
+  onSubmit(form:NgForm){
+    this.service.postMeeting()
+    .subscribe({
+      next:res=>{
+        console.log(res);
+      },
+      error:err=>{console.log(err);
+        console.log("ERROR BODY:", err.error);
 
+      }
+    })
+  }
   
 
 
