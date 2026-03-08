@@ -10,6 +10,7 @@ export class DashboardService {
 
   url:string=environment.apiBaseUrl +'/Meetings'
   list:Dashboard[]=[];
+  formData:Dashboard=new Dashboard()
 
   constructor(private http: HttpClient){}
 

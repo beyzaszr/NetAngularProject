@@ -4,10 +4,12 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import {DashboardService} from '../shared/services/dashboard'
+import {DashboardForm} from '../dashboard/dashboard-form/dashboard-form'
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,DashboardForm],
   templateUrl: './dashboard.html',
   styles: ``,
 })
@@ -16,9 +18,7 @@ export class Dashboard implements OnInit{
   constructor(
     public service: DashboardService,
     private router: Router
-  ){
-
-  }
+  ){  }
 
 
   ngOnInit(): void {

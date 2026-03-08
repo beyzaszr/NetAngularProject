@@ -1,1 +1,64 @@
-<p>dashboard-form works!</p>
+<div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white text-center">
+          <h5 class="mb-0"><!--{{ isEditMode ? 'Update Meeting' : 'Schedule New Meeting' }}--></h5>
+        </div>
+        <div class="card-body">
+          <form #form="ngForm" >
+            
+            <div class="mb-3">
+              <label for="title" class="form-label fw-bold">Meeting Title</label>
+              <input 
+                class="form-control" 
+                placeholder="e.g. Sprint Rewiew"
+                #title="ngModel" name="title"
+                [(ngModel)]="service.formData.title">
+            </div>
+
+            <div class="mb-3">
+              <label for="startDate" class="form-label fw-bold">Start Date & Time</label>
+              <input 
+                type="datetime-local" 
+                id="startDate"
+                name="startDate"
+                [(ngModel)]="service.formData.startDate">
+            </div>
+
+            <div class="mb-3">
+              <label for="endDate" class="form-label fw-bold">End Date & Time</label>
+              <input 
+                type="datetime-local" 
+                id="endDate"
+                name="endDate"
+                [(ngModel)]="service.formData.endDate">
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label fw-bold">Description</label>
+              <textarea 
+                class="form-control" 
+                rows="3" 
+                placeholder="Enter meeting details..."
+                #description="ngModel" name="description"
+                [(ngModel)]="service.formData.description">></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="document" class="form-label fw-bold">Upload Document</label>
+              <input 
+                type="file" 
+                id="document"
+                (change)="onFileSelected($event)" 
+                class="form-control">
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+             <!-- <button type="submit" class="btn btn-primary" [disabled]="meetingForm.invalid">
+                {{ isEditMode ? 'Update Meeting' : 'Save Meeting' }}
+              </button>
+              <button type="button" *ngIf="isEditMode" (click)="resetForm()" class="btn btn-outline-secondary">
+                Cancel Edit
+              </button>-->
+            </div>
+          </form>
+        </div>
+      </div>
