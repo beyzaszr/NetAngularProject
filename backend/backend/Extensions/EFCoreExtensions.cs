@@ -11,6 +11,10 @@ namespace backend.Extensions
         {
             services.AddDbContext<AppDbContext>(options =>
                      options.UseSqlServer(config.GetConnectionString("DevDB")));
+
+            services.AddDbContext<MeetingContext>(options =>
+                     options.UseSqlServer(config.GetConnectionString("DevDB")));
+
             return services;
         }
 
