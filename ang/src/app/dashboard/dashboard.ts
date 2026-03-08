@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-
+import {DashboardService} from '../shared/services/dashboard'
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -12,10 +12,34 @@ import { ToastrService } from 'ngx-toastr';
   styles: ``,
 })
 export class Dashboard implements OnInit{
+
+  constructor(
+    public service: DashboardService,
+    private router: Router
+  ){
+
+  }
+
+
+  ngOnInit(): void {
+    this.service.refreshList();
+  }
+
+
+
+
+
+
+onLogout() {
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('/register');
+  }
+
+/* 
   private toastr = inject(ToastrService);
   formBuilder = inject(FormBuilder);
 
-  constructor(private router: Router) { }
+ // constructor(private router: Router) { }
 
   // Değişken Tanımlamaları
   meetingForm!: FormGroup;
@@ -118,5 +142,7 @@ export class Dashboard implements OnInit{
     localStorage.removeItem('token');
     this.router.navigateByUrl('/register');
   }
+
+*/
 
 }
