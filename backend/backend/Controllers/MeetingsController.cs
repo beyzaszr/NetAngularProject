@@ -51,6 +51,7 @@ namespace backend.Controllers
                 return BadRequest();
             }
 
+            meeting.UpdatedAt = DateTime.UtcNow;
             _context.Entry(meeting).State = EntityState.Modified;
 
             try
