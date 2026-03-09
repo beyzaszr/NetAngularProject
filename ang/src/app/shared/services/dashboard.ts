@@ -31,12 +31,17 @@ export class DashboardService {
    return this.http.post(this.url,this.formData)
   }
 
+  putMeeting(){
+   return this.http.put(this.url+'/'+this.formData.id,this.formData)
+  }
+
+  deleteMeeting(id:number){
+   return this.http.delete(this.url+'/'+id)
+  }
+
   resetForm(form:NgForm){
     form.form.reset()
     this.formData=new DashboardModel()
   }
-
-
-
 
 }

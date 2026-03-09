@@ -27,8 +27,24 @@ export class Dashboard implements OnInit{
   }
 
   editMeeting(selectedRecord: DashboardModel){
-
+    this.service.formData=Object.assign({},selectedRecord);
   }
+
+  onDelete(id:number){
+    if(confirm('Are you sure to delete this meeting?'))
+    this.service.deleteMeeting(id)
+      .subscribe({
+      next:res=>{
+        console.log(res);
+        this.service.list =res as DashboardModel[]
+      },
+      error:err=>{console.log(err);
+        console.log("ERROR BODY:", err.error);
+
+      }
+    })
+  }
+
 
 
 

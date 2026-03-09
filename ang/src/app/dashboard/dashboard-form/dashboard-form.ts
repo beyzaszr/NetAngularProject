@@ -30,6 +30,15 @@ export class DashboardForm {
   }
 
   onSubmit(form:NgForm){
+    if(this.service.formData.id==0)
+      this.insertRecord(form)
+    else
+      this.updateRecord(form)
+  }
+  
+
+
+  insertRecord(form:NgForm){
     this.service.postMeeting()
     .subscribe({
       next:res=>{
@@ -43,8 +52,21 @@ export class DashboardForm {
       }
     })
   }
-  
 
+  updateRecord(form:NgForm){
+    this.service.putMeeting()
+    .subscribe({
+      next:res=>{
+        console.log(res);
+        this.service.list =res as DashboardModel[]
+        this.service.resetForm(form)
+      },
+      error:err=>{console.log(err);
+        console.log("ERROR BODY:", err.error);
+
+      }
+    })
+  }
 
  
 }
