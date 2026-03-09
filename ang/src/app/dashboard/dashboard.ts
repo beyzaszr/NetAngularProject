@@ -1,4 +1,4 @@
-import { Component, OnInit ,inject} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit ,inject} from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,9 @@ export class Dashboard implements OnInit{
 
   constructor(
     public service: DashboardService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ){  }
 
 
@@ -36,7 +38,12 @@ export class Dashboard implements OnInit{
       .subscribe({
       next:res=>{
         console.log(res);
-        this.service.list =res as DashboardModel[]
+       // this.service.list =res as DashboardModel[]
+      // this.service.refreshList();
+        this.service.list = this.service.list.filter(x => x.id !== id);
+        this.cdr.detectChanges();
+        
+        this.toastr.error('Deleted Successfully', 'Delete Meeting')
       },
       error:err=>{console.log(err);
         console.log("ERROR BODY:", err.error);

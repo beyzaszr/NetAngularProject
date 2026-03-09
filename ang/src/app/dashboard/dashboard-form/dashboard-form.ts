@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { DashboardService } from '../../shared/services/dashboard';
-//import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
 import { DashboardModel } from '../../shared/model/dashboard.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard-form',
@@ -13,7 +13,7 @@ import { DashboardModel } from '../../shared/model/dashboard.model';
 })
 export class DashboardForm {
 
-    constructor(public service: DashboardService){  }
+    constructor(public service: DashboardService, private toastr: ToastrService){  }
 
  // private toastr = inject(ToastrService);
   //formBuilder = inject(FormBuilder);
@@ -45,6 +45,7 @@ export class DashboardForm {
         console.log(res);
         this.service.list =res as DashboardModel[]
         this.service.resetForm(form)
+        this.toastr.success('Meeting scheduled successfully','Post Meeting')
       },
       error:err=>{console.log(err);
         console.log("ERROR BODY:", err.error);
@@ -60,6 +61,8 @@ export class DashboardForm {
         console.log(res);
         this.service.list =res as DashboardModel[]
         this.service.resetForm(form)
+        this.toastr.info('Meeting updated successfully','Put Meeting')
+
       },
       error:err=>{console.log(err);
         console.log("ERROR BODY:", err.error);
