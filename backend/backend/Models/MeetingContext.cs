@@ -13,5 +13,11 @@ namespace backend.Models
         }
 
         public DbSet<Meeting> Meetings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Meeting>()
+                .ToTable("Meetings", tb => tb.UseSqlOutputClause(false));
+        }
     }
 }
