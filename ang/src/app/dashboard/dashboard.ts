@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import {DashboardService} from '../shared/services/dashboard'
 import {DashboardForm} from '../dashboard/dashboard-form/dashboard-form'
+import { DashboardModel } from '../shared/model/dashboard.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,9 @@ export class Dashboard implements OnInit{
     this.service.refreshList();
   }
 
+  editMeeting(selectedRecord: DashboardModel){
+
+  }
 
 
 

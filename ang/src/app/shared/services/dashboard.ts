@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { environment } from '../../../environments/environment';
-import { Dashboard } from '../model/dashboard.model';
+import { DashboardModel } from '../model/dashboard.model';
 import { NgForm } from '@angular/forms';
 
 @Injectable({
@@ -10,8 +10,8 @@ import { NgForm } from '@angular/forms';
 export class DashboardService {
 
   url:string=environment.apiBaseUrl +'/Meetings'
-  list:Dashboard[]=[];
-  formData:Dashboard=new Dashboard()
+  list:DashboardModel[]=[];
+  formData:DashboardModel=new DashboardModel()
 
   constructor(private http: HttpClient){}
 
@@ -20,7 +20,7 @@ export class DashboardService {
     this.http.get(this.url)
       .subscribe({
         next: res => {
-         this.list = res as Dashboard[]
+         this.list = res as DashboardModel[]
          console.log(res);
         },
         error: err => { console.log(err) }
@@ -33,7 +33,7 @@ export class DashboardService {
 
   resetForm(form:NgForm){
     form.form.reset()
-    this.formData=new Dashboard()
+    this.formData=new DashboardModel()
   }
 
 

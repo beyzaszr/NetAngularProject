@@ -1,4 +1,4 @@
-export class Dashboard {
+export class DashboardModel {
     id: number=0
     title: string= ""
     description?: string= ""
