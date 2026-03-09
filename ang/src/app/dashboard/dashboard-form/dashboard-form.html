@@ -1,6 +1,6 @@
 <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white text-center">
-          <h5 class="mb-0"><!--{{ isEditMode ? 'Update Meeting' : 'Schedule New Meeting' }}--></h5>
+          <h5 class="mb-0">{{ service.formData.id==0 ? 'Schedule New Meeting' : 'Update Meeting' }}</h5>
         </div>
         <div class="card-body">
           <form #form="ngForm" (submit)="onSubmit(form)">
@@ -52,15 +52,15 @@
             </div>
 
             <div class="d-grid gap-2 mt-4">
-               <button class="btn btn-primary" type="submit">
+               <!--<button class="btn btn-primary" type="submit">
                   Submit
-                </button>         
-             <!-- <button type="submit" class="btn btn-primary" [disabled]="meetingForm.invalid">
-                {{ isEditMode ? 'Update Meeting' : 'Save Meeting' }}
+                </button>   -->      
+              <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+                {{ service.formData.id==0 ? 'Save Meeting' : 'Update Meeting' }}
               </button>
-              <button type="button" *ngIf="isEditMode" (click)="resetForm()" class="btn btn-outline-secondary">
+              <button type="button" *ngIf="service.formData.id != 0" (click)="resetForm(form)" class="btn btn-outline-secondary">
                 Cancel Edit
-              </button>-->
+              </button>
             </div>
           </form>
         </div>

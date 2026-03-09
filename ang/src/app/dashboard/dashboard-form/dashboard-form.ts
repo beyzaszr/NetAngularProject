@@ -3,11 +3,12 @@ import { DashboardService } from '../../shared/services/dashboard';
 import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
 import { DashboardModel } from '../../shared/model/dashboard.model';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './dashboard-form.html',
   styles: ``,
 })
@@ -72,4 +73,9 @@ export class DashboardForm {
   }
 
  
+  resetForm(form: { resetForm: () => void; }){
+  form.resetForm();
+  this.service.formData = new DashboardModel();
+  }
+
 }
