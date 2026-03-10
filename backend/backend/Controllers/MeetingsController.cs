@@ -73,6 +73,48 @@ namespace backend.Controllers
             return Ok(await _context.Meetings.ToListAsync());
         }
 
+
+        // PUT: api/Meetings/cancel/5
+        [HttpPut("cancel/{id}")]
+        public async Task<IActionResult> CancelMeeting(int id)
+        {
+            var meeting = await _context.Meetings.FindAsync(id);
+
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            if (meeting.IsCanceled)
+            {
+                return BadRequest("Meeting already canceled.");
+            }
+
+            meeting.IsCanceled = true;
+            meeting.CanceledAt = DateTime.UtcNow;
+            meeting.UpdatedAt = DateTime.UtcNow;
+
+            _context.Entry(meeting).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MeetingExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(await _context.Meetings.ToListAsync());
+        }
+
         // POST: api/Meetings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

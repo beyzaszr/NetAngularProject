@@ -32,6 +32,27 @@ export class Dashboard implements OnInit{
     this.service.formData=Object.assign({},selectedRecord);
   }
 
+  cancelMeeting(id:number){
+    this.service.cancelMeeting(id)
+      .subscribe({
+      next:res=>{
+        console.log(res);
+        this.service.list =res as DashboardModel[]
+      // this.service.refreshList();
+      //  this.service.list = this.service.list.filter(x => x.id !== id);
+        this.cdr.detectChanges();
+        
+        this.toastr.error('Canceled Successfully', 'Cancel Meeting')
+      },
+      error:err=>{console.log(err);
+        console.log("ERROR BODY:", err.error);
+
+      }
+    })
+  }
+
+
+
   onDelete(id:number){
     if(confirm('Are you sure to delete this meeting?'))
     this.service.deleteMeeting(id)

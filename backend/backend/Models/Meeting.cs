@@ -22,6 +22,8 @@ namespace backend.Models
 
         public bool IsCanceled { get; set; } = false;
 
+        public DateTime? CanceledAt { get; set; }
+
         // Dosya yükleme için
         [Column(TypeName = "nvarchar(255)")]
         public string? DocumentPath { get; set; }

@@ -35,6 +35,10 @@ export class DashboardService {
    return this.http.put(this.url+'/'+this.formData.id,this.formData)
   }
 
+  cancelMeeting(id:number){
+    return this.http.put(this.url + '/cancel/' + id, {})
+  }
+
   deleteMeeting(id:number){
    return this.http.delete(this.url+'/'+id)
   }
