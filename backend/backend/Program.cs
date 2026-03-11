@@ -1,6 +1,9 @@
 using backend.Controllers;
 using backend.Extensions;
 using backend.Models;
+using backend.Services;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +17,27 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddScoped<MeetingCleanupJob>();
+
+builder.Services.AddHangfire(config =>
+{
+    config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DevDB"), new SqlServerStorageOptions
+    {
+        // adjust options as needed
+        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        QueuePollInterval = TimeSpan.Zero,
+        UseRecommendedIsolationLevel = true,
+        DisableGlobalLocks = true,
+        SchemaName = "hangfire"
+    });
+});
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddControllers();
 
@@ -34,6 +58,8 @@ app.ConfigureSwaggerExplorer()
     .AddIdentityAuthMiddlewares()
     .ConfigureCORS(builder.Configuration);
 
+app.UseHangfireDashboard("/hangfire");
+
 
 app.MapControllers();
 
@@ -43,6 +69,13 @@ app.MapGroup("/api")
 app.MapGroup("/api")
     .MapIdentityUserEndpoints();
 
+
+var recurringManager = app.Services.GetRequiredService<IRecurringJobManager>();
+// Example: run every hour. Adjust Cron expression to your desired period.
+recurringManager.AddOrUpdate<MeetingCleanupJob>(
+    "delete-canceled-meetings",
+    job => job.DeleteCanceledMeetings(),
+    Cron.Minutely);
 
 
 
